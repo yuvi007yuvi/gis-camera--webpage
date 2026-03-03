@@ -1,0 +1,550 @@
+/* GIS CCTV Camera Monitoring - Nagar Parishad Sultanganj */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #020617;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --surface: #ffffff;
+    --bg-main: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --header-bg: #020617;
+}
+
+[data-theme='dark'] {
+    --primary: #020617;
+    --accent: #3b82f6;
+    --accent-light: #1e293b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --surface: #0f172a;
+    /* Deep slate surface */
+    --bg-main: #020617;
+    /* Pure dark bg */
+    --border-color: #1e293b;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --header-bg: #000000;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    letter-spacing: -0.011em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header & Branding */
+header.navbar {
+    background-color: var(--primary) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-placeholder {
+    background: linear-gradient(135deg, var(--accent) 0%, #1e40af 100%);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    color: white !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 12px !important;
+}
+
+.navbar-brand {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    color: white !important;
+}
+
+/* Premium Theme Switch */
+.theme-switch-container {
+    cursor: pointer;
+    user-select: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 0;
+    width: 62px;
+    height: 32px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-switch-container:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.theme-switch-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 8px;
+    /* Balanced padding */
+    position: relative;
+}
+
+.toggle-sun,
+.toggle-moon {
+    font-size: 13px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.toggle-sun {
+    color: #facc15;
+}
+
+.toggle-moon {
+    color: #94a3b8;
+}
+
+.switch-handle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border-radius: 50%;
+    left: 4px;
+    /* Centered */
+    top: 4px;
+    /* Centered (32-24)/2 */
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+/* Night Mode Switch Handle Position */
+[data-theme='dark'] .switch-handle {
+    transform: translateX(30px);
+    background: #0f172a;
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+[data-theme='dark'] .toggle-sun {
+    opacity: 0.3;
+}
+
+[data-theme='dark'] .toggle-moon {
+    color: #f1f5f9;
+    opacity: 1;
+}
+
+[data-theme='dark'] .theme-switch-container {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* Main Dashboard Layout Refinements */
+.main-wrapper {
+    padding-top: 2rem;
+    max-width: 1400px;
+}
+
+.dashboard-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 280px;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .chart-stats-card {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-stats-card {
+        grid-column: span 1;
+    }
+}
+
+/* Refined Stat Cards */
+.stat-card {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    background: var(--surface);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+}
+
+.chart-stats-card {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container {
+    height: 140px !important;
+    width: 140px !important;
+    position: relative;
+    margin-top: 10px;
+}
+
+[data-theme='dark'] .stat-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.stat-card:hover {
+    border-color: var(--accent) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+}
+
+.card-subtitle {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+}
+
+.display-6 {
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    line-height: 1;
+}
+
+.text-success {
+    color: var(--success) !important;
+}
+
+.text-danger {
+    color: var(--danger) !important;
+}
+
+.text-warning {
+    color: var(--warning) !important;
+}
+
+/* Filters Glassmorphism panel */
+.glass-panel {
+    background: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+}
+
+.filter-section label {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.filter-section .form-control,
+.filter-section .form-select {
+    font-size: 0.9rem;
+    padding: 0.65rem 1rem;
+    border-color: var(--border-color);
+}
+
+/* Map Professional Outer */
+.map-outer-wrapper {
+    border: 1px solid var(--border-color) !important;
+    background: #f1f5f9;
+}
+
+.map-container {
+    height: 600px;
+    border-radius: 12px !important;
+}
+
+/* Professional Markers */
+.marker-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera-marker-pin {
+    width: 32px;
+    height: 32px;
+    border-radius: 50% 50% 50% 0;
+    background-color: var(--accent);
+    transform: rotate(-45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.camera-marker-pin:hover {
+    transform: rotate(-45deg) scale(1.2);
+    z-index: 1000;
+}
+
+.camera-marker-pin i {
+    transform: rotate(45deg);
+    color: white;
+    font-size: 14px;
+}
+
+.camera-marker-pin.active {
+    background-color: var(--success);
+}
+
+.camera-marker-pin.inactive {
+    background-color: var(--danger);
+}
+
+.camera-marker-pin.maintenance {
+    background-color: var(--warning);
+}
+
+/* Map & Sidebar Wrapper */
+.gis-container {
+    height: 650px;
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.camera-list-sidebar {
+    width: 320px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar-search-box {
+    padding: 1rem;
+    background: var(--bg-main);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-search-box .form-control,
+.sidebar-search-box .form-select {
+    border-radius: 8px;
+    border-color: var(--border-color);
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.camera-list-items {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.camera-list-items::-webkit-scrollbar {
+    width: 8px;
+}
+
+.camera-list-items::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+
+.camera-list-items::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+    border: 2px solid var(--bg-main);
+}
+
+.camera-list-items::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.camera-item {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--surface);
+    color: var(--text-main);
+}
+
+.camera-item:hover {
+    background: var(--accent-light);
+}
+
+.camera-item.active {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+}
+
+/* Map Overlay Controls */
+.map-overlay-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme='dark'] .map-overlay-controls {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Fix Map Control Selects */
+.map-overlay-controls select {
+    background: var(--surface);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 2rem 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* Popup Live Feed Simulation */
+.popup-live-feed {
+    width: 100%;
+    height: 120px;
+    background: #000;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.popup-live-feed .cam-label {
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    color: #fff;
+    font-size: 10px;
+    font-family: monospace;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.popup-live-feed .live-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #ff0000;
+    font-size: 8px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.btn-nav-google {
+    background: #4285F4;
+    color: white !important;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-nav-google:hover {
+    background: #357ae8;
+}
+
+/* Cluster Styling Professional */
+.marker-cluster {
+    background-color: rgba(30, 41, 59, 0.2) !important;
+}
+
+.marker-cluster div {
+    background-color: var(--accent) !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+    width: 34px !important;
+    height: 34px !important;
+    margin-left: 3px !important;
+    margin-top: 3px !important;
+    line-height: 34px !important;
+    border-radius: 50% !important;
+    border: 2px solid white !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Modern Popup */
+.leaflet-popup-content-wrapper {
+    border-radius: 12px !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background: var(--surface) !important;
+    color: var(--text-main) !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--surface) !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+    width: 280px !important;
+}
+
+.camera-popup-header {
+    background: var(--primary) !important;
+    padding: 12px 16px !important;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.camera-popup-body {
+    padding: 16px !important;
+    background: var(--surface);
+}
+
+.btn-modern {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+    border-radius: 8px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .map-container {
+        height: 450px;
+    }
+}
