@@ -14,8 +14,8 @@
     --border-color: rgba(226, 232, 240, 0.8);
     --text-main: #0f172a;
     --text-muted: #64748b;
-    --header-bg: rgba(220, 252, 231, 0.95);
-    --glass-border: rgba(16, 185, 129, 0.2);
+    --header-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(226, 232, 240, 0.8);
 }
 
 [data-theme='dark'] {
@@ -49,6 +49,16 @@ body {
     transition: background-color 0.4s ease, color 0.4s ease;
     overflow-x: hidden;
     position: relative;
+}
+
+/* Base Overrides for Dark Mode Compatibility */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7 !important;
 }
 
 /* Background Decorations */
@@ -463,29 +473,45 @@ body {
     transform: scale(1.1) rotate(5deg);
 }
 
-/* Card Variants */
-.total-card .stat-icon-box {
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.2);
+/* Colorful Card Variants */
+.total-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.4) !important;
 }
 
-.active-card .stat-icon-box {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
-    box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.2);
+.active-card {
+    background: linear-gradient(135deg, #065f46 0%, #10b981 100%) !important;
+    color: white !important;
+    box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.4) !important;
 }
 
-.speaker-card .stat-icon-box {
-    background: rgba(139, 92, 246, 0.1);
-    color: #8b5cf6;
-    box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.2);
+.speaker-card {
+    background: linear-gradient(135deg, #4c1d95 0%, #8b5cf6 100%) !important;
+    color: white !important;
+    box-shadow: 0 10px 30px -5px rgba(139, 92, 246, 0.4) !important;
 }
 
-.sos-card .stat-icon-box {
-    background: rgba(6, 182, 212, 0.1);
-    color: #06b6d4;
-    box-shadow: 0 10px 20px -5px rgba(6, 182, 212, 0.2);
+.sos-card {
+    background: linear-gradient(135deg, #164e63 0%, #06b6d4 100%) !important;
+    color: white !important;
+    box-shadow: 0 10px 30px -5px rgba(6, 182, 212, 0.4) !important;
+}
+
+/* Base Icon Box for Colorful Cards */
+.stat-icon-box {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h6.card-subtitle {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.stat-card h2.custom-stat-number {
+    color: white !important;
 }
 
 /* Animated Icon Definitions */
@@ -583,98 +609,40 @@ body {
     }
 }
 
-.total-card h2 {
-    color: #1e3a8a;
-}
+/* Colorful Card Text Overrides (Removed specific h2 colors as they are now white) */
 
-.active-card h2 {
-    color: #065f46;
-}
-
-.speaker-card h2 {
-    color: #4c1d95;
-}
-
-.sos-card h2 {
-    color: #164e63;
-}
-
-[data-theme='dark'] .total-card h2 {
-    color: #60a5fa;
-}
-
-[data-theme='dark'] .active-card h2 {
-    color: #34d399;
-}
-
-[data-theme='dark'] .speaker-card h2 {
-    color: #a78bfa;
-}
-
-[data-theme='dark'] .sos-card h2 {
-    color: #67e8f9;
-}
-
-/* Status Indicators */
+/* Status Indicators - Updated for Colorful Backgrounds */
 .trend-badge {
     font-size: 0.75rem;
     font-weight: 700;
     padding: 4px 8px;
     border-radius: 8px;
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.status-dot-active {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #10b981;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.status-dot-active::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: #10b981;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #10b981;
-}
-
-.status-dot-offline {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #ef4444;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.status-dot-offline::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-}
-
+.status-dot-active,
+.status-dot-offline,
 .status-dot-warning {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #f59e0b;
+    color: rgba(255, 255, 255, 0.95);
     display: flex;
     align-items: center;
     gap: 6px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+.status-dot-active::before,
+.status-dot-offline::before,
 .status-dot-warning::before {
     content: '';
     width: 8px;
     height: 8px;
-    background: #f59e0b;
+    background: white;
     border-radius: 50%;
+    box-shadow: 0 0 10px white, 0 0 4px rgba(0, 0, 0, 0.5) inset;
 }
 
 .chart-stats-card {

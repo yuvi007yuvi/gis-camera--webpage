@@ -59,15 +59,27 @@
                     </svg>
                 </div>
             </div>
-            <h1 class="navbar-brand fs-5 fw-extrabold mb-0 d-flex align-items-center gap-2">
-                <span class="gradient-text">Nagar Nigam Control System</span>
-                <span class="d-none d-sm-inline opacity-50 fw-normal fs-6">| Sultanganj, Bihar</span>
-            </h1>
-            <div class="badge pulse-badge ms-4 d-none d-lg-flex align-items-center gap-2">
-                <span class="pulse-dot"></span> LIVE NETWORK
+            <div class="d-flex flex-column">
+                <div class="d-flex align-items-center gap-3">
+                    <h1 class="navbar-brand fs-5 fw-extrabold mb-0">
+                        <span class="gradient-text">Network Dashboard</span>
+                    </h1>
+                    <div class="badge pulse-badge d-none d-lg-flex align-items-center gap-2">
+                        <span class="pulse-dot"></span> LIVE NETWORK
+                    </div>
+                </div>
+                <span class="opacity-75 fw-500 mt-1 d-none d-md-block"
+                    style="font-size: 0.85rem; color: var(--text-main);">
+                    Live surveillance ecosystem for <span class="highlight-text" style="font-size: 0.85rem;">Nagar
+                        Parishad Sultanganj</span>
+                </span>
             </div>
 
             <div class="ms-auto d-flex align-items-center gap-4">
+                <button type="button" class="btn btn-modern custom-reset-btn py-1 px-3 d-none d-md-block"
+                    id="reset-filters" style="font-size: 0.85rem !important;">
+                    <i class="fas fa-sync-alt me-1"></i> Reset View
+                </button>
                 <!-- Premium Theme Toggle -->
                 <div class="theme-switch-container shadow-sm" id="theme-toggle-btn" title="Toggle Night Mode">
                     <div class="theme-switch-track">
@@ -78,39 +90,12 @@
                     <!-- Hidden checkbox for logic -->
                     <input type="checkbox" id="dark-mode-toggle" style="display:none;">
                 </div>
-
-                <div class="navbar-nav d-none d-md-block border-start ps-4 border-secondary border-opacity-25">
-                    <span class="header-right-text small fw-500 opacity-75">Nagar Parishad Sultanganj, Bihar</span>
-                </div>
             </div>
         </div>
     </header>
 
     <!-- Main Content Wrapper -->
     <div class="container main-wrapper pb-5">
-        <div class="row mb-5 align-items-center">
-            <div class="col-lg-6">
-                <!-- Upgraded Dashboard Title -->
-                <h2 class="dashboard-main-title mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-accent">
-                        <rect x="2" y="3" border-radius="2" width="20" height="14" rx="2" ry="2" />
-                        <line x1="8" y1="21" x2="16" y2="21" />
-                        <line x1="12" y1="17" x2="12" y2="21" />
-                    </svg>
-                    Network Dashboard
-                </h2>
-                <p class="dashboard-subtitle mb-0">Live surveillance ecosystem for <span class="highlight-text">Nagar
-                        Parishad Sultanganj</span></p>
-            </div>
-            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
-                <button type="button" class="btn btn-modern custom-reset-btn me-2" id="reset-filters">
-                    Reset View
-                </button>
-            </div>
-        </div>
-
         <!-- Dashboard Stat Cards & Analytics -->
         <div class="dashboard-stats-grid">
             <div class="stat-card total-card">
