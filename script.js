@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const map = L.map('camera-map', {
         center: sultanganjCenter,
         zoom: initialZoom,
-        layers: [streetLayer],
+        layers: [satelliteLayer],
         zoomControl: false
     });
 
@@ -177,52 +177,29 @@ document.addEventListener('DOMContentLoaded', () => {
             maintenance: data.filter(c => c.status === 'Maintenance').length
         };
 
-        document.getElementById('total-cameras-count').textContent = counts.total;
-        document.getElementById('active-cameras-count').textContent = counts.active;
-        document.getElementById('inactive-cameras-count').textContent = counts.inactive;
-        document.getElementById('maintenance-cameras-count').textContent = counts.maintenance;
+        const totalEl = document.getElementById('total-cameras-count');
+        const activeEl = document.getElementById('active-cameras-count');
+        const inactiveEl = document.getElementById('inactive-cameras-count');
+        const maintenanceEl = document.getElementById('maintenance-cameras-count');
 
-        updateChart(counts);
-    };
+        if (totalEl) totalEl.textContent = counts.total;
+        if (activeEl) activeEl.textContent = counts.active;
+        if (inactiveEl) inactiveEl.textContent = counts.inactive;
+        if (maintenanceEl) maintenanceEl.textContent = counts.maintenance;
 
-    // 7.1 Chart.js Logic
-    const updateChart = (counts) => {
-        const ctx = document.getElementById('statusChart').getContext('2d');
-
-        if (statusChart) {
-            statusChart.destroy();
-        }
-
-        statusChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Active', 'Offline', 'Fixing'],
-                datasets: [{
-                    data: [counts.active, counts.inactive, counts.maintenance],
-                    backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
-                    borderWidth: 0,
-                    hoverOffset: 4,
-                    cutout: '80%'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                layout: { padding: 0 },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        padding: 10,
-                        titleFont: { size: 12 },
-                        bodyFont: { size: 12 }
-                    }
-                },
-                animation: { animateRotate: true, duration: 800 }
-            }
+        // Animate stat cards entry
+        const cards = document.querySelectorAll('.stat-card');
+        cards.forEach((card, i) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * i);
         });
     };
+
 
     // 8. Render Camera List (Sidebar)
     const renderCameraList = (data) => {
@@ -233,16 +210,16 @@ document.addEventListener('DOMContentLoaded', () => {
             item.className = 'camera-item d-flex align-items-center';
             item.innerHTML = `
                 <div class="me-3">
-                    <div class="rounded-circle" style="width: 10px; height: 10px; background: ${getBadgeColor(camera.status)}"></div>
+                    <div class="status-indicator-dot" style="background: ${getBadgeColor(camera.status)}"></div>
                 </div>
                 <div class="flex-grow-1 overflow-hidden">
-                    <div class="fw-bold small text-truncate">${camera.name}</div>
-                    <div class="text-muted text-truncate" style="font-size: 11px;">
+                    <div class="fw-bold small text-truncate mb-1">${camera.name}</div>
+                    <div class="text-muted text-truncate" style="font-size: 11px; font-weight: 500;">
                         ${wardText} • ${camera.landmark.replace(/Near /i, '')}
                     </div>
                 </div>
                 <div class="ms-2">
-                    <i class="fas fa-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="fas fa-chevron-right text-muted opacity-50" style="font-size: 10px;"></i>
                 </div>
             `;
             item.addEventListener('click', () => {
@@ -252,8 +229,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     map.setView(targetMarker.getLatLng(), 18);
                     targetMarker.openPopup();
                 }
+
+                // Active state styling handled by CSS, but we can ensure focus
+                document.querySelectorAll('.camera-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
             });
+
+            // Staggered entry for list items
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-10px)';
             cameraListContainer.appendChild(item);
+
+            setTimeout(() => {
+                item.style.transition = 'all 0.4s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+            }, 50 * idx);
         });
     };
 
