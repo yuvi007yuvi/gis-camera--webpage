@@ -62,20 +62,24 @@
             <div class="d-flex flex-column">
                 <div class="d-flex align-items-center gap-3">
                     <h1 class="navbar-brand fs-5 fw-extrabold mb-0">
-                        <span class="gradient-text">Network Dashboard</span>
+                        <span class="gradient-text">Emergency SOS Dashboard</span>
                     </h1>
                     <div class="badge pulse-badge d-none d-lg-flex align-items-center gap-2">
-                        <span class="pulse-dot"></span> LIVE NETWORK
+                        <span class="pulse-dot"></span> SECURE NETWORK
                     </div>
                 </div>
                 <span class="opacity-75 fw-500 mt-1 d-none d-md-block"
                     style="font-size: 0.85rem; color: var(--text-main);">
-                    Live surveillance ecosystem for <span class="highlight-text" style="font-size: 0.85rem;">Nagar
+                    High-priority emergency response system for <span class="highlight-text" style="font-size: 0.85rem;">Nagar
                         Parishad Sultanganj</span>
                 </span>
             </div>
 
             <div class="ms-auto d-flex align-items-center gap-4">
+                <button type="button" class="btn btn-modern custom-reset-btn py-1 px-3 d-none d-md-block"
+                    id="show-sos-history" style="font-size: 0.85rem !important;">
+                    <i class="fas fa-history me-1 text-danger"></i> SOS History
+                </button>
                 <button type="button" class="btn btn-modern custom-reset-btn py-1 px-3 d-none d-md-block"
                     id="reset-filters" style="font-size: 0.85rem !important;">
                     <i class="fas fa-sync-alt me-1"></i> Reset View
@@ -97,75 +101,12 @@
     <!-- Main Content Wrapper -->
     <div class="container main-wrapper pb-5">
         <!-- Dashboard Stat Cards & Analytics -->
-        <div class="dashboard-stats-grid">
-            <div class="stat-card total-card">
-                <div class="card-body p-2">
+            <div class="stat-card sos-card grid-col-span-full">
+                <div class="card-body p-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="stat-icon-box">
-                            <!-- CCTV Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.135L16.75 12z" />
-                                <path d="M14.5 19.5 12 12" />
-                                <path d="M7 11V9a5 5 0 0 1 10 0v2" />
-                                <circle cx="12" cy="12" r="2" />
-                            </svg>
-                        </div>
-                        <span class="trend-badge positive">+2.5%</span>
-                    </div>
-                    <h6 class="card-subtitle mb-1">Total Network</h6>
-                    <h2 class="custom-stat-number fw-extrabold mb-0" id="total-cameras-count">0</h2>
-                </div>
-            </div>
-            <div class="stat-card active-card">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="stat-icon-box">
-                            <!-- CCTV Active Icon -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M16.75 12h3.632a1 1 0 0 1 .894 1.447l-2.034 4.069a1 1 0 0 1-1.708.135L16.75 12z" />
-                                <path d="M14.5 19.5 12 12" />
-                                <path d="M7 11V9a5 5 0 0 1 10 0v2" />
-                                <circle cx="12" cy="12" r="2" />
-                                <circle cx="19" cy="5" r="3" fill="currentColor" />
-                            </svg>
-                        </div>
-                        <span class="status-dot-active">Online</span>
-                    </div>
-                    <h6 class="card-subtitle mb-1">CCTV Points</h6>
-                    <h2 class="custom-stat-number fw-extrabold mb-0" id="active-cameras-count">0</h2>
-                </div>
-            </div>
-
-
-            <div class="stat-card speaker-card">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="stat-icon-box">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-                            </svg>
-                        </div>
-                        <span class="status-dot-active">PA Active</span>
-                    </div>
-                    <h6 class="card-subtitle mb-1">Horn Speakers</h6>
-                    <h2 class="custom-stat-number fw-extrabold mb-0" id="total-speakers-count">42</h2>
-                </div>
-            </div>
-            <div class="stat-card sos-card">
-                <div class="card-body p-2">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="stat-icon-box">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        <div class="stat-icon-box emergency-icon-box">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path
                                     d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
@@ -173,13 +114,26 @@
                                 <path d="M12 17h.01" />
                             </svg>
                         </div>
-                        <span class="status-dot-active">Ready</span>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="status-dot-active flash-red">SYSTEM ACTIVE</span>
+                            <button class="btn btn-sm btn-danger py-1 px-3 rounded-pill fw-bold shadow-sm" id="test-sos-btn" style="font-size: 11px;">SIMULATE ALERT</button>
+                        </div>
                     </div>
-                    <h6 class="card-subtitle mb-1">SOS System</h6>
-                    <h2 class="custom-stat-number fw-extrabold mb-0" id="total-sos-count">12</h2>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h6 class="card-subtitle mb-1 opacity-75">TOTAL EMERGENCY ALERTS</h6>
+                            <h2 class="custom-stat-number fw-extrabold mb-0" id="total-sos-count" style="font-size: 3.5rem;">0</h2>
+                        </div>
+                        <div class="col-md-6 text-end d-none d-md-block">
+                             <div class="active-points-badge">
+                                <i class="fas fa-satellite-dish me-2"></i> 24/7 CLOUD CONNECTED
+                             </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Map & Sidebar Combined -->
         <div class="gis-container shadow-lg">
@@ -191,7 +145,7 @@
                             <i class="fas fa-search"></i>
                         </span>
                         <input type="text" id="search-location" class="form-control border-start-0"
-                            placeholder="Find camera...">
+                            placeholder="Locate SOS point...">
                     </div>
                 </div>
                 <div class="camera-list-items" id="camera-items-list">
@@ -204,13 +158,7 @@
                 <!-- Layer Control & Overlay Filters -->
                 <div class="map-overlay-controls d-flex flex-wrap gap-2">
                     <select id="filter-ward" class="shadow-sm">
-                        <option value="">All Regions</option>
-                    </select>
-                    <select id="filter-status" class="shadow-sm">
-                        <option value="">All Status</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Offline</option>
-                        <option value="Maintenance">Fixing</option>
+                        <option value="">All Regions / Wards</option>
                     </select>
                 </div>
                 <div id="camera-map" style="width: 100%; height: 100%;"></div>
@@ -219,7 +167,100 @@
     </div>
 
 
+    <!-- SOS Alert Sound -->
+    <audio id="sos-sound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- SOS Alert Notification Overlay (Hidden by Default) -->
+    <div id="sos-alert-overlay" class="sos-alert-overlay hidden">
+        <div class="sos-alert-content shadow-2xl">
+            <div class="sos-alert-header">
+                <div class="pulse-red-dot"></div>
+                <h3 class="mb-0 fw-extrabold">EMERGENCY SOS ALERT</h3>
+                <button type="button" class="btn-close btn-close-white ms-auto" id="close-sos-alert"></button>
+            </div>
+            <div class="sos-alert-body">
+                <div class="d-flex align-items-start gap-4 mb-4">
+                    <div class="sos-icon-large">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="sos-details-box flex-grow-1">
+                        <div class="sos-info-grid">
+                            <div class="info-item">
+                                <label>CAMERA LOCATION</label>
+                                <span id="sos-cam-name">Aadarsh Nagar Gicho Pokhar</span>
+                            </div>
+                            <div class="info-item">
+                                <label>TIME RECEIVED</label>
+                                <span id="sos-time">12:45:30 PM</span>
+                            </div>
+                            <div class="info-item">
+                                <label>COORDINATES</label>
+                                <span id="sos-coords">25.2444, 86.7343</span>
+                            </div>
+                            <div class="info-item">
+                                <label>WARD NO.</label>
+                                <span id="sos-ward">Ward 05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sos-live-feed-small mb-4">
+                    <div class="live-tag"><i class="fas fa-circle"></i> EMERGENCY LIVE FEED</div>
+                    <img id="sos-live-img" src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=600&q=80" alt="SOS Feed">
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-sos-action btn-respond flex-grow-1" id="sos-navigate">
+                        <i class="fas fa-route me-2"></i> Dispatch Team
+                    </button>
+                    <button class="btn btn-sos-action btn-mute flex-grow-1" id="mute-sos-sound">
+                        <i class="fas fa-volume-mute me-2"></i> Mute Alarm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOS History Modal (Bootstrap) -->
+    <div class="modal fade" id="sosHistoryModal" tabindex="-1" aria-labelledby="sosHistoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content glass-modal border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="sosHistoryModalLabel">
+                        <i class="fas fa-history me-2 text-danger"></i> SOS Alert History
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover custom-sos-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Ward</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sos-history-list">
+                                <!-- History items will be added here -->
+                                <tr class="empty-history text-center">
+                                    <td colspan="4" class="py-4 text-muted">No SOS alerts recorded today.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>

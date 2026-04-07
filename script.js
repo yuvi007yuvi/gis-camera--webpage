@@ -4,6 +4,19 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Initialize Firebase (Real Backend)
+    const firebaseConfig = {
+        apiKey: "AIzaSyB_sJQwf56lmZoJf0ciO95KIgV8bE9NwVM",
+        authDomain: "new786970.firebaseapp.com",
+        projectId: "new786970",
+        storageBucket: "new786970.firebasestorage.app",
+        messagingSenderId: "605309375100",
+        appId: "1:605309375100:web:6538d00718d0914d042ff9"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     // 1. Initialize Map
     // Default center for Sultanganj, Bihar
     const sultanganjCenter = [25.2427, 86.7352];
@@ -63,24 +76,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. UI Elements
     const searchInput = document.getElementById('search-location');
-    const wardFilter = document.getElementById('filter-ward');
-    const statusFilter = document.getElementById('filter-status');
     const cameraListContainer = document.getElementById('camera-items-list');
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
 
-    // 4. Populate Ward Filter
-    const populateWards = () => {
-        const wards = [...new Set(cameraData.map(c => c.ward))].filter(w => w !== 'N/A').sort((a, b) => parseInt(a) - parseInt(b));
+    // 4. Populate Filters (Ward only)
+    function populateFilters() {
+        const wards = [...new Set(cameraData.map(c => c.ward))].filter(w => w !== 'N/A').sort((a,b) => a-b);
+        const wardFilter = document.getElementById('filter-ward');
+        
         wards.forEach(ward => {
-            const option = document.createElement('option');
-            option.value = ward;
-            option.textContent = `Ward ${ward}`;
-            wardFilter.appendChild(option);
+            const opt = document.createElement('option');
+            opt.value = ward;
+            opt.textContent = `Ward ${ward}`;
+            wardFilter.appendChild(opt);
         });
-    };
+    }
 
-    // 5. Marker Icons (Professional Pin Style)
+    // 5. Initial Render
+    function initDashboard() {
+        const sosCount = localStorage.getItem('sos_count') || 0;
+        document.getElementById('total-sos-count').textContent = sosCount;
+        
+        plotMarkers(cameraData);
+        populateFilters();
+        renderCameraList(cameraData);
+    }
+
+    // 6. Marker Icons (Professional Pin Style)
     const getMarkerIcon = (status) => {
         let statusClass = 'active';
         if (status === 'Inactive') statusClass = 'inactive';
@@ -329,8 +352,177 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDashboard(cameraData);
     plotMarkers(cameraData);
 
+    // 11. SOS Alert System
+    const sosOverlay = document.getElementById('sos-alert-overlay');
+    const closeSosBtn = document.getElementById('close-sos-alert');
+    const sosSound = document.getElementById('sos-sound');
+    const muteSosBtn = document.getElementById('mute-sos-sound');
+    const sosHistoryList = document.getElementById('sos-history-list');
+    const showHistoryBtn = document.getElementById('show-sos-history');
+    const testSosBtn = document.getElementById('test-sos-btn');
+    const sosHistoryModal = new bootstrap.Modal(document.getElementById('sosHistoryModal'));
+    
+    let sosAlarmPlaying = false;
+    let sosAlerts = [];
+    let sosMarkers = [];
+
+    const triggerSOSAlert = (cameraInfo) => {
+        // 1. Play Alarm
+        playSOSAlarm();
+        
+        // 2. Update Overlay Details
+        document.getElementById('sos-cam-name').textContent = cameraInfo.name;
+        document.getElementById('sos-ward').textContent = cameraInfo.ward === 'N/A' ? 'General' : `Ward ${cameraInfo.ward}`;
+        document.getElementById('sos-coords').textContent = `${cameraInfo.lat.toFixed(4)}, ${cameraInfo.lng.toFixed(4)}`;
+        document.getElementById('sos-time').textContent = new Date().toLocaleTimeString();
+        
+        // Show overlay
+        sosOverlay.classList.remove('hidden');
+        
+        // 3. Highlight on Map (Persistent Pulse)
+        const pulseMarker = L.marker([cameraInfo.lat, cameraInfo.lng], {
+            icon: L.divIcon({
+                className: 'sos-marker-pulse-container',
+                html: `<div class="sos-marker-pulse"><div class="sos-marker-inner"><i class="fas fa-exclamation"></i></div></div>`,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20]
+            })
+        }).addTo(map);
+        
+        sosMarkers.push(pulseMarker);
+        map.setView([cameraInfo.lat, cameraInfo.lng], 18);
+
+        // 4. Record in History
+        const alertRecord = {
+            id: Date.now(),
+            time: new Date().toLocaleTimeString(),
+            location: cameraInfo.name,
+            ward: cameraInfo.ward,
+            lat: cameraInfo.lat,
+            lng: cameraInfo.lng
+        };
+        sosAlerts.unshift(alertRecord);
+        updateSOSHistoryUI();
+        updateSOSCounter();
+    };
+
+    const playSOSAlarm = () => {
+        sosSound.currentTime = 0;
+        sosSound.loop = true;
+        sosSound.play().catch(e => console.log("Sound play required user interaction"));
+        sosAlarmPlaying = true;
+        muteSosBtn.innerHTML = '<i class="fas fa-volume-mute me-2"></i> Mute Alarm';
+    };
+
+    const stopSOSAlarm = () => {
+        sosSound.pause();
+        sosAlarmPlaying = false;
+        muteSosBtn.innerHTML = '<i class="fas fa-volume-up me-2"></i> Unmute Alarm';
+    };
+
+    const updateSOSHistoryUI = () => {
+        if (sosAlerts.length === 0) return;
+        
+        const emptyRow = sosHistoryList.querySelector('.empty-history');
+        if (emptyRow) emptyRow.remove();
+        
+        sosHistoryList.innerHTML = sosAlerts.map(alert => `
+            <tr>
+                <td class="history-time">${alert.time}</td>
+                <td>${alert.location}</td>
+                <td>Ward ${alert.ward}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill" onclick="window.viewSOSOnMap(${alert.lat}, ${alert.lng})">
+                        <i class="fas fa-map-marker-alt"></i> View
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    };
+
+    const updateSOSCounter = () => {
+        const countEl = document.getElementById('total-sos-count');
+        if (countEl) countEl.textContent = sosAlerts.length;
+    };
+
+    window.viewSOSOnMap = (lat, lng) => {
+        sosHistoryModal.hide();
+        map.setView([lat, lng], 18);
+    };
+
+    // Event Listeners for SOS
+    if (closeSosBtn) {
+        closeSosBtn.addEventListener('click', () => {
+            sosOverlay.classList.add('hidden');
+            stopSOSAlarm();
+        });
+    }
+
+    if (muteSosBtn) {
+        muteSosBtn.addEventListener('click', () => {
+            if (sosAlarmPlaying) stopSOSAlarm();
+            else playSOSAlarm();
+        });
+    }
+
+    if (showHistoryBtn) {
+        showHistoryBtn.addEventListener('click', () => {
+            sosHistoryModal.show();
+        });
+    }
+
+    if (testSosBtn) {
+        testSosBtn.addEventListener('click', () => {
+            // Pick a random camera for testing
+            const randomCam = cameraData[Math.floor(Math.random() * cameraData.length)];
+            triggerSOSAlert(randomCam);
+        });
+    }
+
+    document.getElementById('sos-navigate').addEventListener('click', () => {
+        const lat = parseFloat(document.getElementById('sos-coords').textContent.split(',')[0]);
+        const lng = parseFloat(document.getElementById('sos-coords').textContent.split(',')[1]);
+        window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`, '_blank');
+        sosOverlay.classList.add('hidden');
+        stopSOSAlarm();
+    });
+
+    // 12. Cross-Tab Testing Listener
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'sos_alert_trigger' && event.newValue) {
+            try {
+                const cameraInfo = JSON.parse(event.newValue);
+                triggerSOSAlert(cameraInfo);
+                // Clear the trigger so it can be re-sent with the same value if needed
+                localStorage.removeItem('sos_alert_trigger');
+            } catch (e) {
+                console.error("Invalid SOS signal format", e);
+            }
+        }
+    });
+
+    // 13. Real-Time Firestore Synchronization
+    db.collection("sos_alerts")
+        .orderBy("triggerTime", "desc")
+        .limit(1)
+        .onSnapshot((snapshot) => {
+            snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                    const alertData = change.doc.data();
+                    // Avoid triggering on old alerts that were already in the collection
+                    // by checking if triggerTime is within last 10 seconds
+                    const tenSecondsAgo = Date.now() - 10000;
+                    if (alertData.triggerTime > tenSecondsAgo) {
+                        triggerSOSAlert(alertData);
+                    }
+                }
+            });
+        });
+
     // Initial map resize to ensure Leaflet renders correctly
     setTimeout(() => {
         map.invalidateSize();
     }, 400);
 });
+
+

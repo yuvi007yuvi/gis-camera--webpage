@@ -228,7 +228,9 @@ body {
 .toggle-moon {
     font-size: 13px;
     z-index: 1;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .toggle-sun {
@@ -312,7 +314,6 @@ body {
 }
 
 .sos-card::before {
-    /* Alert stripes */
     background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306b6d4' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
     animation: pan-bg-diag-reverse 20s linear infinite;
 }
@@ -1141,3 +1142,244 @@ body {
         height: 450px;
     }
 }
+
+/* ==========================================================================
+   SOS ALERT SYSTEM STYLES
+   ========================================================================== */
+
+.sos-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(15px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sos-alert-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.1);
+}
+
+.sos-alert-content {
+    width: 90%;
+    max-width: 700px;
+    background: var(--surface);
+    border: 3px solid #ff4444;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    animation: sos-pulse-border 2.5s ease-in-out infinite;
+    box-shadow: 0 0 50px rgba(239, 68, 68, 0.5);
+}
+
+@keyframes sos-pulse-border {
+    0%, 100% { border-color: #ef4444; box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); }
+    50% { border-color: #f87171; box-shadow: 0 0 60px rgba(239, 68, 68, 0.6); }
+}
+
+.sos-alert-header {
+    background: #ef4444;
+    color: white;
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.pulse-red-dot {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    animation: flash 0.8s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.sos-alert-body {
+    padding: 3rem;
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(239, 68, 68, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 100% 100%, rgba(239, 68, 68, 0.05) 0%, transparent 40%);
+}
+
+.sos-icon-large {
+    width: 90px;
+    height: 90px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.8rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.1);
+}
+
+.sos-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.info-item span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: block;
+}
+
+.sos-live-feed-small {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 250px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.2);
+}
+
+.sos-live-feed-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.live-tag {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    backdrop-filter: blur(8px);
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.live-tag i {
+    color: #ef4444;
+    margin-right: 6px;
+    animation: flash 1s steps(2, start) infinite;
+}
+
+.btn-sos-action {
+    padding: 1.25rem;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-respond {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 10px 25px -5px rgba(239, 68, 68, 0.4);
+}
+
+.btn-respond:hover {
+    background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.5);
+    color: white;
+}
+
+.btn-mute {
+    background: var(--accent-light);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.btn-mute:hover {
+    background: var(--border-color);
+    transform: translateY(-3px);
+}
+
+/* History Modal Styling */
+.glass-modal {
+    background: var(--surface) !important;
+    backdrop-filter: blur(25px) !important;
+    border-radius: 30px !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3) !important;
+}
+
+.custom-sos-table {
+    margin-top: 1.5rem;
+}
+
+.custom-sos-table th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    border-bottom: 2px solid var(--border-color);
+    padding: 1.25rem 1rem;
+}
+
+.custom-sos-table td {
+    padding: 1.5rem 1rem;
+    vertical-align: middle;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.history-time {
+    color: #ef4444;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+}
+
+/* Custom Marker for SOS */
+.sos-marker-inner {
+    width: 24px;
+    height: 24px;
+    background: #ef4444;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 2px solid white;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+    animation: marker-bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+}
+
+@keyframes marker-bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+}
+
+[data-theme='dark'] .btn-mute {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
